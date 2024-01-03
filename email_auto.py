@@ -71,16 +71,16 @@ mensagem_sucesso = f"""
 subject = f"As entregas do dia {DT.datetime.today().strftime('%Y-%m-%d')}"
 #print(mensagem_sucesso)
 
-enderecos_email = ['carlosmagno.sms.rio.cla@gmail.com','carllosmagnus1@gmail.com']
+enderecos_email = ['seu_email1@email.com','seu_email2@email.com']
 
 
 if df.empty:
     for emails in enderecos_email:
         msg = email.message.Message()
         msg['Subject'] = subject
-        msg['From'] = 'carlosmagno.sms.rio.cla@gmail.com'
+        msg['From'] = 'seu_email1@email.com'
         msg['To'] = emails
-        password = "tifc rfqw gpyz pilp"
+        password = "sua_senha1"
         msg.add_header('Content-Type', 'text/html')
         msg.set_payload(mensagem_erro)
 
@@ -95,9 +95,9 @@ else:
     for emails in enderecos_email:
         msg = email.message.Message()
         msg['Subject'] = subject
-        msg['From'] = 'carlosmagno.sms.rio.cla@gmail.com'
+        msg['From'] = 'seu_email1@email.com'
         msg['To'] = emails
-        password = "tifc rfqw gpyz pilp"
+        password = "sua_senha1"
         msg.add_header('Content-Type', 'text/html')
         msg.set_payload(mensagem_sucesso)
 
