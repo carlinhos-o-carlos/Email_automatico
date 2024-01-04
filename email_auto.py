@@ -4,8 +4,11 @@ import email
 import locale
 import smtplib
 
+### Configurar o local, para o uso futuro da função currency.
 locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+#locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8") ## Caso tenha algum valor monetario em real, por favor descomente essa linha e comente a linha anterior
 
+### Criação de uma função para a tranformação de algumas colunas para a formatação de moeda.
 def moeda(df, colunas: list):
     try:
         for i in colunas:
@@ -17,22 +20,31 @@ def moeda(df, colunas: list):
     except:
         print(f"A COLUNA {i} APRESENTA ALGUM ERRO")
 
+### Leitura do excel
 df = pd.read_excel('sampledatafoodsales.xlsx',sheet_name='FoodSales')
 
+### Formatação dos dados
 df = moeda(df=df,colunas=['TotalPrice','UnitPrice'])
-
 df['Qty'] = df['Qty'].map('{:n}'.format)
 
+### Tranforção da coluna para data
 df["Date"] = df["Date"].apply(lambda s: DT.datetime.strptime(s, "%Y-%m-%d"))
-#df = df[df["Date"] == DT.datetime.today().strftime('%Y-%m-%d')]
+
+### Filtragem do dataframe para o dia desejado
+#df = df[df["Date"] == DT.datetime.today().strftime('%Y-%m-%d')] ## Caso sua base de dados tenha valores futuros, descomente essa linha e comente a linha de baixo, antes de colocar seu codigo no agendador de tarefas.
 df = df[df["Date"] == '2022-01-04']
+
 df.drop(columns=['ID', 'Date'])
 
+### Tornando o dataframe filtrado em uma versão html  
 df_html = df.to_html(index=False,justify='center')
 #print(df_html)
-df_html = df_html.replace('<table border="1" class="dataframe">','<table border="1" class="dataframe" style="font-size: 10pt; border: 1px solid black; border-collapse: collapse; text-align: center; width: 100%;">')
-################# EMAIL DO JEITO CLASSICO #################
 
+### Formnatndo a tabela em html
+df_html = df_html.replace('<table border="1" class="dataframe">','<table border="1" class="dataframe" style="font-size: 10pt; border: 1px solid black; border-collapse: collapse; text-align: center; width: 100%;">')
+################# EMAIL  #################
+
+### Criação das duas versões de email que serão utilizados
 mensagem_erro = f"""
             <center>
                 <p>Bom dia,</p>
@@ -73,7 +85,7 @@ subject = f"As entregas do dia {DT.datetime.today().strftime('%Y-%m-%d')}"
 
 enderecos_email = ['seu_email1@email.com','seu_email2@email.com']
 
-
+### Logica utilizada para o envio de email
 if df.empty:
     for emails in enderecos_email:
         msg = email.message.Message()
