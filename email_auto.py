@@ -27,7 +27,7 @@ df = pd.read_excel('sampledatafoodsales.xlsx',sheet_name='FoodSales')
 df = moeda(df=df,colunas=['TotalPrice','UnitPrice'])
 df['Qty'] = df['Qty'].map('{:n}'.format)
 
-### Tranforção da coluna para data
+### Tranformação da coluna para data
 df["Date"] = df["Date"].apply(lambda s: DT.datetime.strptime(s, "%Y-%m-%d"))
 
 ### Filtragem do dataframe para o dia desejado
@@ -40,7 +40,7 @@ df.drop(columns=['ID', 'Date'])
 df_html = df.to_html(index=False,justify='center')
 #print(df_html)
 
-### Formnatndo a tabela em html
+### Formatando a tabela em html
 df_html = df_html.replace('<table border="1" class="dataframe">','<table border="1" class="dataframe" style="font-size: 10pt; border: 1px solid black; border-collapse: collapse; text-align: center; width: 100%;">')
 ################# EMAIL  #################
 
